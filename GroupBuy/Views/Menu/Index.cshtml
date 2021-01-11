@@ -1,0 +1,70 @@
+﻿@model IEnumerable<GroupBuy.Models.Product>
+
+@{
+    var number = ViewBag.number;
+    ViewBag.Title = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    
+<h2>Menu</h2>
+
+
+<div class="container border">
+    @{
+        foreach (var item in Model)
+        {
+            <div class="col-sm-4 col-lg-4 col-md-4" style="padding-top: 15px">
+                <div class="thumbnail">
+                    <a href="@Url.Action("Details", "Products", new { id = item.Id})">
+                        <img src=@item.ImageUrl alt="" style="width:100%"/>
+                    </a>
+                    <div class="caption">
+                        <h3 class="pull-right">@item.Price.ToString("c")</h3>
+                        <h4>
+                            <a href="@Url.Action("Details", "Products", new { id = item.Id})">
+                                @item.Name <span class="badge">@item.Remaining</span>
+                            </a>
+
+                        </h4>
+                        
+                    <p class="myc">10</p>
+                    </div>
+                    <br />
+                    <div class="addToCart text-center">
+                        <a onclick="find(@item.Id);" class="btn btn-info" role="button">Add to Cart</a>
+                    </div>
+                    
+                    
+                    <br />
+                    <div class="progress" style="height:10px">
+                        @{int tmp = item.Remaining *100 / item.Totle; }
+                        
+                        <div class="progress-bar" style="width:@tmp%; height:10px"></div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</div>
+<script>
+        var uri = '/api/products';
+
+        
+
+        function formatItem(item) {
+            return item.Name + ': $' + item.Price;
+        }
+
+        function find(id) {
+            
+            $.getJSON(uri + '/' + id)
+                .done(function () {
+                    
+                })
+                .fail();
+        }
+</script>
+
